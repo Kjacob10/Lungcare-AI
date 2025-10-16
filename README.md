@@ -1,4 +1,4 @@
-# LungCareAI - Final Year Project
+# LungCareAI 
 
 A comprehensive lung disease classification and management system that combines machine learning for audio-based diagnosis with a full-stack web application for patient management.
 
