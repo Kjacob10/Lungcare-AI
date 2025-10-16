@@ -96,7 +96,7 @@ Create a `.env` file in the `server` directory with the following variables:
 
 ```env
 # Database
-MONGODB_URL=mongodb://localhost:27017/lungcareai
+MONGODB_URL=mongodb://localhost:27017/<you-choose>
 
 # JWT Secret (use a strong, random string)
 JWT_SECRET=your_super_secret_jwt_key_here
