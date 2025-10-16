@@ -4,16 +4,16 @@ A comprehensive lung disease classification and management system that combines 
 
 ## Features
 
-- **Audio-Based Lung Disease Classification**: Uses TensorFlow and machine learning to classify lung diseases (COPD, Bronchiolitis, Pneumonia, URTI, Healthy) from audio recordings
-- **Patient Management System**: Full-stack application for managing patient records and medical data
-- **Doctor Dashboard**: Specialized interface for healthcare professionals
-- **User Authentication**: Secure login/signup system with JWT tokens
-- **File Upload**: Support for audio file uploads and cloud storage via Cloudinary
-- **Responsive UI**: Modern React-based frontend with Tailwind CSS
+- Audio-Based Lung Disease Classification: Uses TensorFlow and machine learning to classify lung diseases (COPD, Bronchiolitis, Pneumonia, URTI, Healthy) from audio recordings
+- Patient Management System: Full-stack application for managing patient records and medical data
+- Doctor Dashboard: Specialized interface for healthcare professionals
+- User Authentication: Secure login/signup system with JWT tokens
+- File Upload: Support for audio file uploads and cloud storage via Cloudinary
+- Responsive UI: Modern React-based frontend with Tailwind CSS
 
 ## Tech Stack
 
-### Frontend
+ Frontend
 - React 18 with TypeScript
 - Vite for build tooling
 - Redux Toolkit for state management
@@ -21,14 +21,14 @@ A comprehensive lung disease classification and management system that combines 
 - Axios for API calls
 - React Router for navigation
 
-### Backend (Server)
+ Backend (Server)
 - Node.js with Express.js
 - MongoDB with Mongoose
 - JWT for authentication
 - Cloudinary for file storage
 - bcryptjs for password hashing
 
-### Machine Learning (Web)
+ Machine Learning (Web)
 - Python Flask
 - TensorFlow/Keras for ML models
 - Librosa for audio processing
@@ -38,34 +38,34 @@ A comprehensive lung disease classification and management system that combines 
 
 Before running this project, make sure you have the following installed:
 
-- **Node.js** (v16 or higher) - [Download](https://nodejs.org/)
-- **Python** (3.10 recommended) - [Download](https://python.org/)
-- **MongoDB** - [Download](https://mongodb.com/) or use MongoDB Atlas
-- **Git** - [Download](https://git-scm.com/)
+- Node.js (v16 or higher) - [Download](https://nodejs.org/)
+- Python (3.10 recommended for tensorflow) - [Download](https://python.org/)
+- MongoDB - [Download](https://mongodb.com/) or use MongoDB Atlas
+- Git - [Download](https://git-scm.com/)
 
 ## Installation
 
-1. **Clone the repository:**
+1. Clone the repository:
    ```bash
    git clone <repository-url>
    cd LungCareAI-final-year-project-main
    ```
 
-2. **Install frontend dependencies:**
+2. Install frontend dependencies:
    ```bash
    cd frontend
    npm install
    cd ..
    ```
 
-3. **Install server dependencies:**
+3. Install server dependencies:
    ```bash
    cd server
    npm install
    cd ..
    ```
 
-4. **Set up Python virtual environment for TensorFlow:**
+4. Ensure virtual environment is activated if python version is higher than 3.11 tensorflow doesnt support above 3.11:
    ```bash
    cd web
    # Create virtual environment (if not already created)
@@ -83,19 +83,14 @@ Before running this project, make sure you have the following installed:
 
 ## Environment Setup
 
-### MongoDB Setup
+ MongoDB Setup
 
-1. **Local MongoDB:**
+1. Local MongoDB:
    - Install MongoDB Community Server
    - Start MongoDB service
-   - Default connection: `mongodb://localhost:27017/lungcareai`
+   - Default connection: `mongodb://localhost:27017/<you-choose>`
 
-2. **MongoDB Atlas (Cloud):**
-   - Create account at [MongoDB Atlas](https://cloud.mongodb.com/)
-   - Create a cluster and database
-   - Get connection string from Atlas dashboard
-
-### Environment Variables
+ Environment Variables
 
 Create a `.env` file in the `server` directory with the following variables:
 
@@ -106,40 +101,31 @@ MONGODB_URL=mongodb://localhost:27017/lungcareai
 # JWT Secret (use a strong, random string)
 JWT_SECRET=your_super_secret_jwt_key_here
 
-# Cloudinary Configuration (for file uploads)
-CLOUD_NAME=your_cloudinary_cloud_name
-API_KEY=your_cloudinary_api_key
-API_SECRET=your_cloudinary_api_secret
-
-# Server Port (optional, defaults to 4000)
-PORT=4000
-```
-
-**Note:** Get Cloudinary credentials from [Cloudinary Dashboard](https://cloudinary.com/) after creating an account.
 
 ## Running the Application
 
-### 1. Start MongoDB
+ 1. Start MongoDB
 Make sure MongoDB is running on your system.
 
-### 2. Start the Backend Server
+ 2. Start the Backend Server
 ```bash
 cd server
 npm run dev
 ```
 Server will start on `http://localhost:4000`
 
-### 3. Start the Frontend
+ 3. Start the Frontend
 ```bash
 cd frontend
 npm run dev
 ```
 Frontend will start on `http://localhost:5173`
 
-### 4. Start the ML Classification Service
+ 4. Start the ML Classification Service
 ```bash
 cd web
-# Activate virtual environment
+
+# Activate virtual environment [ if presenet otherwise skip directly run flask ]
 # Windows:
 tfenv\Scripts\activate
 # macOS/Linux:
@@ -152,19 +138,19 @@ ML service will start on `http://localhost:5000`
 
 ## Usage
 
-1. **Access the application:**
+1. Access the application:
    - Main application: `http://localhost:5173`
    - ML Classification: `http://localhost:5000`
 
-2. **User Registration/Login:**
+2. User Registration/Login:
    - Register as a new user or login with existing credentials
    - Doctors have access to additional dashboard features
 
-3. **Audio Classification:**
+3. Audio Classification:
    - Upload lung sound recordings (.wav files)
    - Get instant classification results for lung conditions
 
-4. **Patient Management:**
+4. Patient Management:
    - View and manage patient records
    - Upload medical reports and audio files
 
@@ -200,41 +186,28 @@ LungCareAI-final-year-project-main/
 └── README.md
 ```
 
-## API Endpoints
-
-### Authentication
-- `POST /api/v1/auth/signup` - User registration
-- `POST /api/v1/auth/login` - User login
-- `POST /api/v1/auth/logout` - User logout
-
-### Doctor Routes
-- `GET /api/v1/doctor/dashboard` - Doctor dashboard data
-- `POST /api/v1/doctor/patient` - Add new patient
-- `GET /api/v1/doctor/patients` - Get all patients
-
 ## Troubleshooting
 
-### Common Issues
+ Common Issues
 
-1. **MongoDB Connection Failed:**
+1. MongoDB Connection Failed:
    - Ensure MongoDB is running
+   - net start MongoDB [ to start mongodb service from powershell [administrator]
    - Check MONGODB_URL in .env file
-   - Verify network connectivity for Atlas
+   - By default, MongoDB stores its data in the C:\data\db directory on Windows. Check and edit mongod.conf file  usally at C:\Program Files\MongoDB\Server\8.2\bin) to C:\data\db and then run net start MongoDB
+     
 
-2. **TensorFlow Import Error:**
-   - Ensure virtual environment is activated
+2. TensorFlow Import Error:
+   - Ensure virtual environment is activated if python version is higher than 3.11 tensorflow doesnt support above 3.11
    - Install TensorFlow: `pip install tensorflow`
    - Use Python 3.10 for best compatibility
 
-3. **Port Already in Use:**
+3. Port Already in Use:
    - Kill processes using ports 4000, 5000, 5173
    - Or modify ports in configuration files
 
-4. **Cloudinary Upload Issues:**
-   - Verify Cloudinary credentials in .env
-   - Check account limits and billing
 
-### Development Commands
+ Development Commands
 
 ```bash
 # Frontend
