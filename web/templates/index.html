@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>Respiratory Disease</title>
+  <link rel="stylesheet" href="static/images/lung.png">
+  <link rel="icon" type="image/x-icon" href="static/images/lung.png">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Bootstrap App Landing Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Small Apps Template v1.0">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+  
+  <!-- PLUGINS CSS STYLE -->
+  <link rel="stylesheet" href="static/plugins/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="static/plugins/themify-icons/themify-icons.css">
+  <link rel="stylesheet" href="static/plugins/slick/slick.css">
+  <link rel="stylesheet" href="static/plugins/slick/slick-theme.css">
+  <link rel="stylesheet" href="static/plugins/fancybox/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="static/plugins/aos/aos.css">
+
+  <!-- CUSTOM CSS -->
+  <link href="static/css/style.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  
+</head>
+
+<body class="body-wrapper" data-spy="scroll" data-target=".privacy-nav">
+
+
+
+
+<!-- Single Page Layout -->
+<div class="main-container">
+    <div class="content-wrapper">
+        <!-- Left Side - Form -->
+        <div class="form-section">
+            <h1>LungCare AI</h1>
+            <p>Advanced respiratory disease diagnosis powered by AI</p>
+
+            <div class="upload-card">
+                <div class="upload-icon">
+                    <i class="fas fa-lungs"></i>
+                </div>
+                <h3>Upload Audio File</h3>
+
+                <form method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <div class="file-input-wrapper">
+                            <input type="file" name="file" id="file-input" class="file-input" accept=".wav" required>
+                            <label for="file-input" class="file-input-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                Choose WAV file
+                            </label>
+                        </div>
+                        <small style="color: #718096; display: block; margin-top: 0.5rem; font-size: 0.875rem;">
+                            Supported format: WAV files only
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <i class="fas fa-upload"></i>
+                        Analyze Audio
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Side - Image and Results -->
+        <div class="image-section">
+            <img src="static/images/lung.png" alt="Lung illustration" class="lung-image">
+
+            {% if prediction %}
+            <div class="prediction-result">
+                <h4>
+                    <i class="fas fa-stethoscope"></i>
+                    Diagnosis Result
+                </h4>
+                <div class="prediction-text" id="prediction">{{ prediction }}</div>
+                <p id="description">Loading description...</p>
+                <button onclick="playDescription()" class="audio-btn">
+                    <i class="fas fa-volume-high"></i>
+                    Listen
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to update description based on prediction
+    function updateDescription() {
+      var prediction = document.getElementById('prediction').innerText.trim();
+      var description = document.getElementById('description');
+
+      // Switch case to set description based on prediction
+      switch(prediction) {
+        case 'COPD':
+          description.innerText = "A chronic lung disease characterized by airflow obstruction, making it difficult to breathe. It typically worsens over time and is often caused by smoking.";
+          break;
+        case 'Bronchiolitis':
+          description.innerText = "An inflammatory respiratory condition that primarily affects the small airways (bronchioles), commonly seen in infants and young children. It's usually caused by viral infections, particularly respiratory syncytial virus (RSV).";
+          break;
+        case 'Pneumonia':
+          description.innerText = "An infection that inflames the air sacs in one or both lungs, leading to symptoms like cough, fever, and difficulty breathing. It can be caused by bacteria, viruses, or fungi.";
+          break;
+        case 'URTI':
+          description.innerText = "An infection involving the nose, sinuses, throat, and sometimes the larynx (voice box) or trachea (windpipe). It's commonly caused by viruses and presents symptoms like nasal congestion, sore throat, cough, and sneezing.";
+          break;
+        case 'Healthy':
+          description.innerText = "A state of well-being characterized by the absence of significant illness or disease, including respiratory conditions. It typically involves good lung function, normal breathing patterns, and absence of respiratory symptoms. Regular exercise, balanced diet, and avoidance of smoking contribute to maintaining respiratory health.";
+          break;
+        default:
+          description.innerText = "Loading diagnosis information..."; // Default message
+      }
+    }
+
+    // Call the function initially and on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateDescription();
+    });
+
+    // Function to play description text as audio
+    function playDescription() {
+      var descriptionText = document.getElementById('description').innerText.trim();
+      if (descriptionText && descriptionText !== "Loading diagnosis information...") {
+        var synth = window.speechSynthesis;
+        var utterance = new SpeechSynthesisUtterance(descriptionText);
+        synth.speak(utterance);
+      }
+    }
+
+    // Add loading animation to form submission
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          const button = form.querySelector('button[type="submit"]');
+          if (button) {
+            button.innerHTML = '<i class="fas fa-spinner spinner"></i> Analyzing...';
+            button.disabled = true;
+          }
+        });
+      }
+
+      // File input change handler
+      const fileInput = document.getElementById('file-input');
+      const fileLabel = document.querySelector('.file-input-label');
+
+      if (fileInput && fileLabel) {
+        fileInput.addEventListener('change', function() {
+          if (this.files && this.files[0]) {
+            const fileName = this.files[0].name;
+            fileLabel.innerHTML = '<i class="fas fa-file-audio"></i> ' + fileName;
+          } else {
+            fileLabel.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Choose WAV file';
+          }
+        });
+      }
+    });
+</script>
+  
+
+
+
+
+<!--============================
+=            Footer            =
+=============================-->
+<footer>
+  
+
+<div class="text-center bg-dark py-4">
+   <small> <p> </script></a></p></small class="text-secondary">
+</div>
+</footer>
+
+
+  <!-- To Top -->
+  <div class="scroll-top-to">
+    <i class="ti-angle-up"></i>
+  </div>
+  
+  <!-- JAVASCRIPTS -->
+  <script src="static/plugins/jquery/jquery.min.js"></script>
+  <script src="static/plugins/bootstrap/bootstrap.min.js"></script>
+  <cript src="static/plugins/slick/slick.min.js"></cript>
+  <script src="static/plugins/fancybox/jquery.fancybox.min.js"></script>
+  <script src="static/plugins/syotimer/jquery.syotimer.min.js"></script>
+  <script src="static/plugins/aos/aos.js"></script>
+  <!-- google mstatic/ap -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgeuuDfRlweIs7D6uo4wdIHVvJ0LonQ6g"></script>
+  <script src="static/plugins/google-map/gmap.js"></script>
+  
+  <script src="static/js/script.js"></script>
+</body>
+
+</html>
